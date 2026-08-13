@@ -1,8 +1,8 @@
 class ClaudeCompletions < Formula
   desc "Bash and zsh tab completion for the Claude Code CLI"
   homepage "https://github.com/earchibald/claude-code-completions"
-  url "https://github.com/earchibald/claude-code-completions/releases/download/v1.0.0/claude-completions-1.0.0.tar.gz"
-  sha256 "9f994eda2e7156347366cd482600bb7e6851e71ecd2fdb1a64416e703fe3ddfd"
+  url "https://github.com/earchibald/claude-code-completions/releases/download/v1.0.1/claude-completions-1.0.1.tar.gz"
+  sha256 "9d537fde559550f09bcd65020b944d703c6cb71aa75bce5ee865815cf128a279"
   license "MIT"
   head "https://github.com/earchibald/claude-code-completions.git", branch: "main"
 
