@@ -1,8 +1,8 @@
 class ClaudeCompletions < Formula
   desc "Bash and zsh tab completion for the Claude Code CLI"
   homepage "https://github.com/earchibald/claude-code-completions"
-  url "https://github.com/earchibald/claude-code-completions/releases/download/v1.0.1/claude-completions-1.0.1.tar.gz"
-  sha256 "9d537fde559550f09bcd65020b944d703c6cb71aa75bce5ee865815cf128a279"
+  url "https://github.com/earchibald/claude-code-completions/releases/download/v1.0.2/claude-completions-1.0.2.tar.gz"
+  sha256 "91b36c58b39f54c121a36d7890f0c77bf0a5d469f7f1b60ee49c0dbd9f8083b5"
   license "MIT"
   head "https://github.com/earchibald/claude-code-completions.git", branch: "main"
 
@@ -15,6 +15,14 @@ class ClaudeCompletions < Formula
     bin.install "claude-completions"
     doc.install "README.md"
     pkgshare.install "tests"
+
+    # Completion for this tool itself. The `claude` completions are generated
+    # later, by `claude-completions install`, since they depend on which Claude
+    # Code the user has.
+    # The default parameter format appends the bare shell name, which gives
+    # `claude-completions completions bash`.
+    generate_completions_from_executable(bin/"claude-completions", "completions",
+                                         shells: [:bash, :zsh])
   end
 
   def caveats
@@ -41,6 +49,11 @@ class ClaudeCompletions < Formula
     paths = shell_output("#{bin}/claude-completions paths")
     assert_match "BASH_FILE=", paths
     assert_match "ZSH_FILE=", paths
+
+    # Self-completion must be emitted for both shells.
+    assert_match "complete -F _claude_completions",
+                 shell_output("#{bin}/claude-completions completions bash")
+    assert_match "compdef", shell_output("#{bin}/claude-completions completions zsh")
 
     # Generating without a claude binary must fail cleanly, not hang or crash.
     output = shell_output("CLAUDE_BIN=definitely-not-a-real-binary " \
